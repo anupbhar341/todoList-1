@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function Signin() {
+export default function Signin({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,7 +13,7 @@ export default function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4001/user/sign-in", {
+      const response = await axios.post("http://localhost:4002/user/sign-in", {
         email: email,
         password: password,
       });
@@ -21,6 +21,9 @@ export default function Signin() {
         const token = response.data.token;
         if (token) {
           localStorage.setItem("token", token);
+          if (onLoginSuccess) {
+            onLoginSuccess();
+          }
           navigate("/", { state: { from: "login" }, replace: true });
         } else {
           setError("No token received from the server.");

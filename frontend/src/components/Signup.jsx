@@ -14,7 +14,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4001/user/sign-up", { username, email, password });
+      const response = await axios.post("http://localhost:4002/user/sign-up", { username, email, password });
       if (response.status === 200 || response.status === 201) {
         navigate('/login');
         setUsername('');

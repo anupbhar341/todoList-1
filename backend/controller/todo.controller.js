@@ -3,6 +3,9 @@ import TodoModel from "../model/todo.model.js"
 export const createTodo = async (req, res) => {
     const todo = new TodoModel({
         text: req.body.text,
+        description: req.body.description,
+        dueDate: req.body.dueDate,
+        priority: req.body.priority,
         isComplete: false,
         user: req.user
     });

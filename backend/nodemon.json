@@ -1,0 +1,8 @@
+{
+  "ignore": [
+    "data/*",
+    "*.db",
+    "*.log",
+    "node_modules/"
+  ]
+} 
