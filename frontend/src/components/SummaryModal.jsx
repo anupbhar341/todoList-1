@@ -26,6 +26,8 @@ function SummaryModal({ isOpen, onClose, onGenerate }) {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let foundContent = false;
+      let foundNoTasks = false;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -40,6 +42,11 @@ function SummaryModal({ isOpen, onClose, onGenerate }) {
               const data = JSON.parse(line.slice(6));
               if (data.content) {
                 setSummary(prev => prev + data.content);
+                foundContent = true;
+              }
+              if (data.message && data.message.includes('No tasks completed today')) {
+                setSummary('No tasks completed today.');
+                foundNoTasks = true;
               }
               if (data.done) {
                 if (onGenerate) onGenerate(summary);
@@ -49,6 +56,10 @@ function SummaryModal({ isOpen, onClose, onGenerate }) {
             }
           }
         }
+      }
+      // If no content and no tasks, show a message
+      if (!foundContent && !foundNoTasks) {
+        setSummary('No tasks completed today.');
       }
     } catch (error) {
       setError(error.message);

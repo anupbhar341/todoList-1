@@ -9,21 +9,13 @@ console.log("GROQ_API_KEY length:", process.env.GROQ_API_KEY?.length);
 
 // Initialize Groq client with API key from environment variable
 const groq = new Groq({
-    apiKey: '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'
+    apiKey: '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'
 });
 
 export const generateSummary = async (req, res) => {
     try {
         console.log("Starting summary generation...");
         
-        // Check if Groq API key is configured
-        if (!process.env.GROQ_API_KEY) {
-            console.error("GROQ_API_KEY is not configured");
-            return res.status(500).json({
-                message: "Groq API key is not configured. Please set GROQ_API_KEY in your environment variables."
-            });
-        }
-
         const userId = req.user;
         if (!userId) {
             console.error("No user ID found in request");
@@ -62,7 +54,7 @@ export const generateSummary = async (req, res) => {
         const completedTasks = await TodoModel.find({
             user: userId,
             isComplete: true,
-            createdAt: {
+            completedAt: {
                 $gte: today,
                 $lt: tomorrow
             }
